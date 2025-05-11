@@ -1,0 +1,105 @@
+---
+import { Code } from 'astro:components';
+
+const code = `interface Developer {
+    name: string;
+    skills: string[];
+    interests: string[];
+};
+
+interface TechStack {
+    devOps: string[];
+    backend: string[];
+   frontend: string[];
+};
+
+type ContactType = 'github' | 'linkedIn' | 'email';
+
+const techStack: TechStack = {
+    devOps: [
+        'GitHub',
+        'AWS',
+        'Docker'
+    ],
+    frontend: [
+        'Vue.js',
+        'Nuxt.js',
+        'React',
+        'TypeScript',
+        'TailwindCSS',
+        'Astro',
+        'Markdown',
+    ],
+    backend: [
+        'Node.js',
+        'Python',
+        'Ruby',
+        'AWS Serverless',
+    ]
+};
+
+// Developer profile
+const me: Developer = {
+    name: 'Timofei Utkin',
+    skills: [
+        ...techStack.devOps,
+        ...techStack.backend,
+        ...techStack.frontend
+    ],
+    interests: [
+        'AI',
+        'Software Development',
+        'Automation',
+        'Cybersecurity',
+        'DevOps',
+        'Security',
+    ]
+};
+
+// Contact function
+const contact = (type: ContactType): string => {
+    switch (type) {
+        case 'github':
+            return 'https://github.com/MrHarigo';
+        case 'linkedIn':
+            return 'https://www.linkedin.com/in/timofei-utkin/';
+        case 'email':
+            return 'hi@harigo.me';
+        default:
+            return 'Send fax.';
+    }
+};
+
+`;
+---
+
+<Code
+    code={code}
+    lang="js"
+    wrap={true}
+/>
+
+<style is:global>
+
+    /* Custom styling for code block line numbers */
+    pre.astro-code {
+        @apply bg-transparent !important;
+    }
+
+    pre.astro-code code {
+        @apply block;
+        counter-reset: step;
+        counter-increment: step 0;
+    }
+
+    pre.astro-code code .line {
+        @apply relative;
+    }
+
+    pre.astro-code code .line::before {
+        content: counter(step);
+        counter-increment: step;
+        @apply text-gray-600 pr-2;
+    }
+
+</style>
