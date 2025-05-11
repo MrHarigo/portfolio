@@ -2,7 +2,7 @@
 import SocialIcon from './SocialIcon.astro';
 
 interface Social {
-    icon: 'github' | 'linkedIn' | 'email';
+    icon: 'github' | 'instagram' | 'linkedIn' | 'email';
     link: string;
     title?: string;
 }
@@ -16,6 +16,10 @@ const socials: Social[] = [{
 //     link: 'https://x.com/harigo',
 //     title: 'View Twitter Profile'
 // }, {
+    icon: 'instagram',
+    link: 'https://www.instagram.com/harigo_world',
+    title: 'View Instagram Profile'
+}, {
     icon: 'linkedIn',
     link: 'https://www.linkedin.com/in/timofei-utkin',
     title: 'View LinkedIn Profile'

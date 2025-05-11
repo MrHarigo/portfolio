@@ -13,7 +13,7 @@ interface TechStack {
    frontend: string[];
 };
 
-type ContactType = 'github' | 'linkedIn' | 'email';
+type ContactType = 'github' | 'instagram' | 'linkedIn' | 'email';
 
 const techStack: TechStack = {
     devOps: [
@@ -61,6 +61,8 @@ const contact = (type: ContactType): string => {
     switch (type) {
         case 'github':
             return 'https://github.com/MrHarigo';
+        case 'instagram':
+            return 'https://www.instagram.com/harigo_world';
         case 'linkedIn':
             return 'https://www.linkedin.com/in/timofei-utkin/';
         case 'email':
