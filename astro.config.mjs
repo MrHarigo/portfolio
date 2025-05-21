@@ -3,9 +3,11 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import compress from 'astro-compress';
 import sitemap from '@astrojs/sitemap';
+import netlify from '@astrojs/netlify';
 
 export default defineConfig({
-    output: 'static',
+    output: 'server',
+    adapter: netlify(),
     trailingSlash: 'always',
     site: 'https://harigo.me',
     prefetch: false,
