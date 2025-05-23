@@ -6,7 +6,7 @@ let cacheTime = null;
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
 // Hardcoded GA4 property ID
-const GA4_PROPERTY_ID = 'G-WX0M47C15W';
+const PORTFOLIO_ID = 489929948;
 
 exports.handler = async (event, context) => {
   try {
@@ -43,7 +43,7 @@ exports.handler = async (event, context) => {
 
     // Run the GA4 report query
     const [response] = await analyticsDataClient.runReport({
-      property: `properties/${GA4_PROPERTY_ID}`,
+      property: `properties/${PORTFOLIO_ID}`,
       dateRanges: [
         {
           startDate: startDate,
@@ -52,7 +52,7 @@ exports.handler = async (event, context) => {
       ],
       metrics: [
         {
-          name: 'activeUsers',
+          name: 'totalUsers',
         },
       ],
     });
@@ -65,7 +65,6 @@ exports.handler = async (event, context) => {
 
     // Structure the data for the frontend
     const result = {
-      count: totalVisitors,
       portfolio: totalVisitors, // Use the same value for the portfolio project
       // Add more project-specific data if needed
     };

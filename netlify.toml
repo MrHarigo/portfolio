@@ -1,0 +1,9 @@
+[build]
+  functions = "netlify/functions"
+
+[dev]
+  framework = "astro"
+  autoLaunch = true
+
+[functions]
+  node_bundler = "esbuild" 
