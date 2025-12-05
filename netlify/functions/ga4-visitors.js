@@ -8,6 +8,13 @@ const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 // Hardcoded GA4 property ID
 const PORTFOLIO_ID = 489929948;
 
+// Map project IDs to their hostnames
+const PROJECT_HOSTNAMES = {
+  'portfolio': 'harigo.me',
+  'daily-habits': 'daily.harigo.me',
+  'poker-planner': 'planner.harigo.me',
+};
+
 exports.handler = async (event, context) => {
   try {
     // Return cached data if available and not expired
@@ -41,33 +48,31 @@ exports.handler = async (event, context) => {
       credentials: credentialsJson
     });
 
-    // Run the GA4 report query
+    // Run the GA4 report query with hostname dimension
     const [response] = await analyticsDataClient.runReport({
       property: `properties/${PORTFOLIO_ID}`,
-      dateRanges: [
-        {
-          startDate: startDate,
-          endDate: endDate,
-        },
-      ],
-      metrics: [
-        {
-          name: 'totalUsers',
-        },
-      ],
+      dateRanges: [{ startDate, endDate }],
+      dimensions: [{ name: 'hostName' }],
+      metrics: [{ name: 'totalUsers' }],
     });
 
-    // Process the response
-    let totalVisitors = 0;
-    if (response?.rows?.[0]?.metricValues?.[0]?.value) {
-      totalVisitors = Number.parseInt(response.rows[0].metricValues[0].value, 10);
+    // Build result object from response
+    const result = {};
+    
+    if (response?.rows) {
+      for (const row of response.rows) {
+        const hostname = row.dimensionValues[0].value;
+        const users = parseInt(row.metricValues[0].value, 10);
+        
+        // Find which project this hostname belongs to
+        for (const [projectId, projectHostname] of Object.entries(PROJECT_HOSTNAMES)) {
+          if (hostname === projectHostname || hostname === `www.${projectHostname}`) {
+            result[projectId] = users;
+            break;
+          }
+        }
+      }
     }
-
-    // Structure the data for the frontend
-    const result = {
-      portfolio: totalVisitors, // Use the same value for the portfolio project
-      // Add more project-specific data if needed
-    };
 
     // Cache the result
     cachedData = result;
