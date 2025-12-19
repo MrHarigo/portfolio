@@ -18,12 +18,6 @@ const certifications: Certification[] = [{
     credentialUrl: 'https://www.credly.com/earner/earned/badge/f2f23d83-224e-4ff6-a902-205f14422b2d',
     image: '/img/certs/aws-saa.png',
 }, {
-    name: '日本語能力試験1級 (JLPT N1)',
-    issuer: 'Japanese Language Proficiency Test',
-    issued: 'Jul 2025',
-    credentialId: 'N1A331404J',
-    image: '/img/certs/jlpt.png',
-}, {
     name: 'AWS Certified Cloud Practitioner',
     issuer: 'Amazon Web Services (AWS)',
     issued: 'Oct 2025',
@@ -31,6 +25,12 @@ const certifications: Certification[] = [{
     credentialId: 'f28a135811694ce59ad3083b90e5995a',
     credentialUrl: 'https://www.credly.com/badges/41446000-674a-457d-be13-2d0c9b6b47e7/',
     image: '/img/certs/aws-ccp.png',
+}, {
+    name: '日本語能力試験1級 (JLPT N1)',
+    issuer: 'Japanese Language Proficiency Test',
+    issued: 'Jul 2025',
+    credentialId: 'N1A331404J',
+    image: '/img/certs/jlpt.png',
 }];
 ---
 
@@ -46,15 +46,15 @@ const certifications: Certification[] = [{
 
                     <!-- Image or fallback icon -->
                     {cert.image ? (
-                        <div class="flex-shrink-0 w-20 h-20 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden p-2">
-                            <img 
-                                src={cert.image} 
+                        <div class="flex-shrink-0 w-24 h-24 flex items-center justify-center">
+                            <img
+                                src={cert.image}
                                 alt={cert.name}
-                                class="w-full h-full object-contain rounded-lg"
+                                class="w-full h-full object-contain"
                             />
                         </div>
                     ) : (
-                        <div class="flex-shrink-0 w-20 h-20 rounded-xl bg-gray-800 flex items-center justify-center text-primary">
+                        <div class="flex-shrink-0 w-24 h-24 rounded-xl bg-gray-800 flex items-center justify-center text-primary">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                             </svg>
