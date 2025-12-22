@@ -28,3 +28,8 @@ pnpm-debug.log*
 package-lock.json
 # Local Netlify folder
 .netlify
+
+# Claude Code local settings
+.claude/*.local.json
+.claude/chats/
+.claude/cache/
