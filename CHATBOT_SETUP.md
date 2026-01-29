@@ -47,24 +47,60 @@ The chatbot uses Groq's free API to provide an interactive experience where visi
 
 #### Netlify Deployment
 
-1. Go to your Netlify dashboard
-2. Select your portfolio site
-3. Go to **Site settings** → **Environment variables**
-4. Add both required variables:
+**Method 1: Using Netlify Blobs (Recommended)**
 
-   **Variable 1: Groq API Key**
-   - **Key**: `GROQ_API_KEY`
-   - **Value**: Your Groq API key (e.g., `gsk_...`)
-   - **Scopes**: Check all (Production, Deploy previews, Branch deploys)
+This method bypasses Netlify's 5000 character limit for environment variables.
 
-   **Variable 2: Chatbot Context** (IMPORTANT!)
-   - **Key**: `CHATBOT_CONTEXT`
-   - **Value**: Copy the entire context from `.env.chatbot-context` file (the full multi-line text inside the single quotes)
-   - **Scopes**: Check all (Production, Deploy previews, Branch deploys)
-   - This contains your CV details, salary expectations, and recruiter FAQ
+1. **Add Groq API Key to Netlify**
+   - Go to Netlify Dashboard → Your Site → Site Settings → Environment Variables
+   - Add:
+     - **Key**: `GROQ_API_KEY`
+     - **Value**: Your Groq API key (e.g., `gsk_...`)
+     - **Scopes**: Check all
 
-5. Click **Save** after adding both
-6. Trigger a new deploy for changes to take effect
+2. **Deploy Your Site First**
+   - Push your code to GitHub/GitLab
+   - Let Netlify deploy it
+
+3. **Upload Context to Netlify Blobs**
+
+   Option A - Using Netlify CLI (Easiest):
+   ```bash
+   # Install Netlify CLI if you haven't
+   npm install -g netlify-cli
+
+   # Login to Netlify
+   netlify login
+
+   # Link your site
+   netlify link
+
+   # Upload the context
+   netlify blobs:set chatbot context "$(cat .env.chatbot-context | grep CHATBOT_CONTEXT | cut -d"'" -f2)"
+   ```
+
+   Option B - Using the upload script:
+   ```bash
+   # Make sure CHATBOT_CONTEXT is in your .env
+   netlify dev
+   npm run upload-context
+   ```
+
+4. **Verify It Works**
+   - Visit your site
+   - Click "Chat with Me"
+   - Ask a question
+   - Check Netlify function logs to see "✅ Loaded context from Netlify Blobs"
+
+**Method 2: Environment Variable (If context is under 5000 chars)**
+
+Only use this if you've significantly shortened your context:
+
+1. Go to Netlify Dashboard → Environment Variables
+2. Add `CHATBOT_CONTEXT` with your content
+3. Deploy
+
+**Note:** The chatbot automatically tries Netlify Blobs first, then falls back to environment variables.
 
 ## Testing Locally
 
