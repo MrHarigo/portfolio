@@ -48,7 +48,8 @@ src/
     └── profile.png
 
 netlify/functions/
-└── ga4-visitors.js             # Serverless function for GA4 analytics
+├── ga4-visitors.js             # Serverless function for GA4 analytics
+└── chat.js                     # Serverless function for AI chatbot
 ```
 
 ### Key Architectural Patterns
@@ -115,12 +116,50 @@ The portfolio includes a downloadable CV feature that fetches the PDF from cloud
 3. Build script automatically downloads new version
 4. Last updated date updates automatically
 
+## Chatbot Feature
+
+The portfolio includes an AI-powered chatbot that allows recruiters and visitors to ask questions about experience, skills, and projects.
+
+### How It Works
+- **Full-page interface**: Accessible at `/chat/` in a new tab
+- **AI Provider**: Uses Groq API with Llama 3.1 70B model (free tier)
+- **Context-aware**: Pre-loaded with portfolio information (projects, skills, certifications)
+- **Rate limiting**: 20 messages per session to prevent abuse
+- **Session persistence**: Chat history stored in localStorage
+
+### Implementation Details
+- **Chat page**: `src/pages/chat.astro` - Full-screen chat interface with vanilla JS
+- **Button**: Located in `src/components/Contact.astro` - Opens chat in new tab
+- **Function**: `netlify/functions/chat.js` - Handles Groq API integration
+- **Styling**: Matches portfolio aesthetic (dark theme, monospace, rose accent)
+
+### Free Tier Limits
+- **Groq API**: 1,000 requests per day (free)
+- **Per session**: 20 messages maximum
+- **Session timeout**: 1 hour
+
+### Chatbot Context
+The bot has knowledge about:
+- Full name, location, and role
+- Technical skills (frontend, backend, DevOps)
+- All portfolio projects with descriptions
+- Certifications (AWS SAA, AWS CCP, JLPT N1)
+- Contact information
+
+### Getting Groq API Key
+1. Visit https://console.groq.com/keys
+2. Sign up for a free account
+3. Create a new API key
+4. Add to `.env` as `GROQ_API_KEY`
+5. Deploy to Netlify and add to environment variables
+
 ## Environment Variables
 
 Required in `.env`:
 ```bash
 GA4_CREDENTIALS='{...}'  # Stringified GA4 service account JSON
 CV_URL='https://drive.google.com/uc?export=download&id=FILE_ID'  # Google Drive direct download URL
+GROQ_API_KEY='your_groq_api_key_here'  # Groq API key for chatbot (get at console.groq.com)
 ```
 
 ## Build Optimizations
