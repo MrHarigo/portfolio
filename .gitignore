@@ -33,3 +33,6 @@ package-lock.json
 .claude/*.local.json
 .claude/chats/
 .claude/cache/
+
+# CV/Resume PDF (optional - remove this line if you want to commit your CV)
+public/cv.pdf

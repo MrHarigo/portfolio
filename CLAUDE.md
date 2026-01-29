@@ -93,11 +93,34 @@ All SEO metadata is centralized in `src/layouts/Layout.astro`:
 - Sitemap integration
 - Geo region targeting (JP-TOK)
 
+## CV Download Feature
+
+The portfolio includes a downloadable CV feature that fetches the PDF from cloud storage at build time:
+
+### How It Works
+- **Build-time fetch**: `scripts/fetch-cv.js` downloads CV from URL during build
+- **Cloud storage**: CV stored in Google Drive (or S3/Dropbox)
+- **Auto-dating**: Last updated date is automatically read from file metadata
+- **Git-excluded**: CV is never committed to repository (in `.gitignore`)
+
+### Implementation Details
+- **Download button**: Located in `src/components/Contact.astro`
+- **Build process**: `npm run build` fetches CV before Astro build
+- **File location**: Downloaded to `public/cv.pdf` (git-ignored)
+- **Date detection**: Uses Node.js `fs.statSync()` to read file's `mtime`
+
+### Updating the CV
+1. Replace file in Google Drive (keep same file ID)
+2. Trigger Netlify deploy
+3. Build script automatically downloads new version
+4. Last updated date updates automatically
+
 ## Environment Variables
 
 Required in `.env`:
 ```bash
 GA4_CREDENTIALS='{...}'  # Stringified GA4 service account JSON
+CV_URL='https://drive.google.com/uc?export=download&id=FILE_ID'  # Google Drive direct download URL
 ```
 
 ## Build Optimizations
