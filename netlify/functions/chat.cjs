@@ -12,8 +12,12 @@ let cachedContext = null;
 
 /**
  * Get chatbot context from Netlify Blobs or environment variable
- * Netlify Blobs: Used in production (no 5000 char limit)
- * Environment variable: Used for local development
+ *
+ * Production: Reads from Netlify Blobs (uploaded via: npm run upload-context)
+ * Local dev: Reads from CHATBOT_CONTEXT in .env file
+ *
+ * Context is stored in .env.chatbot-context and uploaded to Blobs to bypass
+ * Netlify's 5000 character limit for environment variables
  */
 async function getContext() {
   // Return cached context if available

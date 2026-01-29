@@ -64,7 +64,6 @@ This method bypasses Netlify's 5000 character limit for environment variables.
 
 3. **Upload Context to Netlify Blobs**
 
-   Option A - Using Netlify CLI (Easiest):
    ```bash
    # Install Netlify CLI if you haven't
    npm install -g netlify-cli
@@ -75,15 +74,13 @@ This method bypasses Netlify's 5000 character limit for environment variables.
    # Link your site
    netlify link
 
-   # Upload the context
-   netlify blobs:set chatbot context "$(cat .env.chatbot-context | grep CHATBOT_CONTEXT | cut -d"'" -f2)"
+   # Upload the context (uses .env.chatbot-context file)
+   npm run upload-context
    ```
 
-   Option B - Using the upload script:
+   Or manually:
    ```bash
-   # Make sure CHATBOT_CONTEXT is in your .env
-   netlify dev
-   npm run upload-context
+   netlify blobs:set chatbot context "$(cat .env.chatbot-context | grep CHATBOT_CONTEXT | cut -d"'" -f2)"
    ```
 
 4. **Verify It Works**
