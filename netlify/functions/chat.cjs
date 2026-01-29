@@ -9,8 +9,10 @@ const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 hour
 
 // Cache for context to avoid repeated Blob reads
 // Cache expires after 5 minutes to allow updates without full redeployment
+// Also invalidates immediately when blob ETag changes (content updated)
 let cachedContext = null;
 let cacheTimestamp = 0;
+let cachedETag = null;
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 /**
@@ -23,22 +25,57 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
  * Netlify's 5000 character limit for environment variables
  */
 async function getContext() {
-  // Check if cache is still valid
   const now = Date.now();
-  if (cachedContext && (now - cacheTimestamp < CACHE_TTL)) {
-    console.log('✅ Using cached context');
-    return cachedContext;
-  }
 
   try {
     // Try to get from Netlify Blobs first (production)
     const store = getStore('chatbot');
+
+    // Check if blob has been updated by comparing ETag
+    // This allows immediate cache invalidation when context is updated
+    if (cachedContext && cachedETag) {
+      try {
+        const metadata = await store.getMetadata('context');
+
+        if (metadata && metadata.etag && metadata.etag !== cachedETag) {
+          console.log('🔄 Context updated (ETag changed), invalidating cache');
+          cachedContext = null;
+          cachedETag = null;
+        }
+      } catch (metadataError) {
+        // If metadata fetch fails, fall back to TTL-based caching
+        console.log('ℹ️  Could not fetch metadata, using TTL-based cache');
+      }
+    }
+
+    // Check if cache is still valid (within TTL and not invalidated by ETag)
+    if (cachedContext && (now - cacheTimestamp < CACHE_TTL)) {
+      console.log('✅ Using cached context');
+      return cachedContext;
+    }
+
+    // Fetch fresh context from Blobs
     const context = await store.get('context', { type: 'text' });
 
     if (context) {
+      // Get metadata to store ETag for future comparisons
+      let etag = null;
+      try {
+        const metadata = await store.getMetadata('context');
+        etag = metadata?.etag;
+      } catch (metadataError) {
+        console.log('ℹ️  Could not fetch metadata for ETag tracking');
+      }
+
       console.log(`✅ Loaded context from Netlify Blobs (${context.length} characters)`);
       cachedContext = context;
       cacheTimestamp = Date.now();
+      cachedETag = etag;
+
+      if (etag) {
+        console.log(`📌 Cached with ETag: ${etag.substring(0, 8)}...`);
+      }
+
       return context;
     }
   } catch (error) {
