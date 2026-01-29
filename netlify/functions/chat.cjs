@@ -8,12 +8,12 @@ const MAX_MESSAGES_PER_SESSION = 20;
 const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 hour
 
 // Cache for context to avoid repeated Blob reads
-// Cache expires after 5 minutes to allow updates without full redeployment
-// Also invalidates immediately when blob ETag changes (content updated)
+// Primary invalidation: ETag comparison (immediate updates when content changes)
+// Secondary invalidation: TTL-based expiry (fallback if metadata fetch fails)
 let cachedContext = null;
 let cacheTimestamp = 0;
 let cachedETag = null;
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour (safe since ETag provides immediate invalidation)
 
 /**
  * Get chatbot context from Netlify Blobs or environment variable
