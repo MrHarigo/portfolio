@@ -1,4 +1,5 @@
 const Groq = require('groq-sdk');
+const { getStore } = require('@netlify/blobs');
 
 // Rate limiting per session (stored in memory)
 // In production, consider using Netlify Blobs or external storage
@@ -6,11 +7,45 @@ const sessionLimits = new Map();
 const MAX_MESSAGES_PER_SESSION = 20;
 const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 hour
 
-// Portfolio context - Load from environment variable to keep sensitive info out of repo
-// This includes CV details, salary expectations, and personal preferences
-// Set CHATBOT_CONTEXT in your .env file or Netlify environment variables
-// See .env.chatbot-context file for the full context template
-const PORTFOLIO_CONTEXT = process.env.CHATBOT_CONTEXT || `You are a helpful AI assistant. Please configure the CHATBOT_CONTEXT environment variable with your full context.`;
+// Cache for context to avoid repeated Blob reads
+let cachedContext = null;
+
+/**
+ * Get chatbot context from Netlify Blobs or environment variable
+ * Netlify Blobs: Used in production (no 5000 char limit)
+ * Environment variable: Used for local development
+ */
+async function getContext() {
+  // Return cached context if available
+  if (cachedContext) {
+    return cachedContext;
+  }
+
+  try {
+    // Try to get from Netlify Blobs first (production)
+    const store = getStore('chatbot');
+    const context = await store.get('context', { type: 'text' });
+
+    if (context) {
+      console.log('✅ Loaded context from Netlify Blobs');
+      cachedContext = context;
+      return context;
+    }
+  } catch (error) {
+    console.log('ℹ️  Netlify Blobs not available, trying environment variable');
+  }
+
+  // Fallback to environment variable (local development)
+  if (process.env.CHATBOT_CONTEXT) {
+    console.log('✅ Loaded context from environment variable');
+    cachedContext = process.env.CHATBOT_CONTEXT;
+    return cachedContext;
+  }
+
+  // No context available
+  console.error('❌ No chatbot context configured');
+  return 'You are a helpful AI assistant. Please configure the chatbot context.';
+}
 
 exports.handler = async (event, context) => {
   try {
@@ -103,12 +138,15 @@ exports.handler = async (event, context) => {
       apiKey: process.env.GROQ_API_KEY
     });
 
+    // Get chatbot context (from Blobs or env var)
+    const portfolioContext = await getContext();
+
     // Call Groq API
     const completion = await groq.chat.completions.create({
       messages: [
         {
           role: 'system',
-          content: PORTFOLIO_CONTEXT
+          content: portfolioContext
         },
         {
           role: 'user',
