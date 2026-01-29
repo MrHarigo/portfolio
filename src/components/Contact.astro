@@ -1,31 +1,23 @@
 ---
 import Socials from './Socials.astro';
-import { statSync } from 'fs';
-import { join } from 'path';
 
-// Try to get CV file's last modified date
-let cvLastUpdated = 'January 2026';
-let cvFileName = 'CV_Utkin_Timofei_2026_Jan.pdf';
-
+// Import CV metadata generated at build time
+// This avoids file system access during SSR
+let cvMetadata;
 try {
-    const cvPath = join(process.cwd(), 'public', 'cv.pdf');
-    const stats = statSync(cvPath);
-    const lastModified = new Date(stats.mtime);
-
-    // Format for display: "January 2026"
-    cvLastUpdated = lastModified.toLocaleDateString('en-US', {
-        month: 'long',
-        year: 'numeric'
-    });
-
-    // Format for filename: "CV_Utkin_Timofei_2026_Jan.pdf"
-    const year = lastModified.getFullYear();
-    const month = lastModified.toLocaleDateString('en-US', { month: 'short' });
-    cvFileName = `CV_Utkin_Timofei_${year}_${month}.pdf`;
+    cvMetadata = await import('../data/cv-metadata.json');
 } catch (error) {
-    // If CV file doesn't exist yet, use default date
-    console.warn('CV file not found, using default date');
+    // Fallback if metadata doesn't exist (shouldn't happen after build)
+    const now = new Date();
+    cvMetadata = {
+        default: {
+            displayDate: now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+            fileName: `CV_Utkin_Timofei_${now.getFullYear()}_${now.toLocaleDateString('en-US', { month: 'short' })}.pdf`
+        }
+    };
 }
+
+const { displayDate: cvLastUpdated, fileName: cvFileName } = cvMetadata.default;
 ---
 
 <div>
