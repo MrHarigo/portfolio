@@ -29,7 +29,12 @@ async function getContext() {
 
   try {
     // Try to get from Netlify Blobs first (production)
+    console.log('🔍 Attempting to access Netlify Blobs...');
+    console.log('   NETLIFY_BLOBS_CONTEXT:', process.env.NETLIFY_BLOBS_CONTEXT ? 'present' : 'missing');
+    console.log('   Context:', typeof context);
+
     const store = getStore('chatbot');
+    console.log('✅ Store instance created');
 
     // Check if blob has been updated by comparing ETag
     // This allows immediate cache invalidation when context is updated
@@ -45,6 +50,7 @@ async function getContext() {
       } catch (metadataError) {
         // If metadata fetch fails, fall back to TTL-based caching
         console.log('ℹ️  Could not fetch metadata, using TTL-based cache');
+        console.log('   Metadata error:', metadataError.message);
       }
     }
 
@@ -55,7 +61,9 @@ async function getContext() {
     }
 
     // Fetch fresh context from Blobs
+    console.log('📥 Fetching context from Blobs...');
     const context = await store.get('context', { type: 'text' });
+    console.log('📦 Context fetched, length:', context ? context.length : 'null');
 
     if (context) {
       // Get metadata to store ETag for future comparisons
@@ -77,11 +85,15 @@ async function getContext() {
       }
 
       return context;
+    } else {
+      console.log('⚠️  Blob returned null/empty');
     }
   } catch (error) {
-    console.log('ℹ️  Netlify Blobs not available, trying environment variable');
-    console.log('   Blobs error details:', error.message);
-    if (error.code) console.log('   Error code:', error.code);
+    console.error('❌ Netlify Blobs error:', error.message);
+    console.error('   Error type:', error.constructor.name);
+    console.error('   Error code:', error.code);
+    console.error('   Stack:', error.stack);
+    console.log('ℹ️  Falling back to environment variable');
   }
 
   // Fallback to environment variable (local development)

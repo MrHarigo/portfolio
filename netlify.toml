@@ -7,7 +7,5 @@
 
 [functions]
   node_bundler = "esbuild"
-
-# Enable external node modules for Blobs
-[functions."chat"]
+  # External node modules that should not be bundled
   external_node_modules = ["@netlify/blobs"] 
