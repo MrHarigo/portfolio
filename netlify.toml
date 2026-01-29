@@ -6,4 +6,6 @@
   autoLaunch = true
 
 [functions]
-  node_bundler = "esbuild" 
+  node_bundler = "esbuild"
+  # External node modules that should not be bundled
+  external_node_modules = ["@netlify/blobs"] 
