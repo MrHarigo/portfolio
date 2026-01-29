@@ -77,11 +77,9 @@ const { displayDate: cvLastUpdated, fileName: cvFileName } = cvMetadata.default;
     <!-- End: CV Download Button -->
 
     <!-- Start: Chat Button -->
-    <a
-        href="/chat/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-4 flex items-center w-full px-4 py-3 rounded-lg bg-black text-gray-100 transition-all duration-150 border-2 border-gray-600 hover:border-primary hover:text-primary font-medium group relative">
+    <button
+        id="open-chat-button"
+        class="mt-4 flex items-center w-full px-4 py-3 rounded-lg bg-black text-gray-100 transition-all duration-150 border-2 border-gray-600 hover:border-primary hover:text-primary font-medium group relative cursor-pointer">
 
         <!-- Chat Icon -->
         <svg
@@ -100,7 +98,13 @@ const { displayDate: cvLastUpdated, fileName: cvFileName } = cvMetadata.default;
             <span class="text-sm">Chat with Me</span>
             <span class="text-xs text-gray-400 group-hover:text-primary/70">Ask about my experience & skills</span>
         </span>
-    </a>
+    </button>
+
+    <script>
+        document.getElementById('open-chat-button')?.addEventListener('click', () => {
+            window.dispatchEvent(new CustomEvent('open-chat-modal'));
+        });
+    </script>
     <!-- End: Chat Button -->
 
     <!-- Start: Social Links -->
