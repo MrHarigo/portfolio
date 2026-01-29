@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "scripts": {
         "dev": "astro dev",
-        "build": "astro build",
+        "build": "node scripts/fetch-cv.js && astro build",
         "preview": "astro preview",
         "astro": "astro"
     },
@@ -12,6 +12,7 @@
         "@astrojs/netlify": "^6.3.3",
         "@google-analytics/data": "^4.4.0",
         "astro": "^5.4.2",
+        "dotenv": "^17.2.3",
         "googleapis": "^149.0.0",
         "shiki": "^3.1.0",
         "swetrix": "^3.5.4",
