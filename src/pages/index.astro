@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 
 import Profile from '../components/Profile.astro';
 import Contact from '../components/Contact.astro';
+import ChatModal from '../components/ChatModal.astro';
 
 import ContentLink from '../components/ContentLink.astro';
 import ContentCode from '../components/ContentAbout.astro';
@@ -116,6 +117,9 @@ import ContentCertifications from '../components/ContentCertifications.astro';
     <div class="fixed md:absolute bottom-0 left-0 right-0 w-full text-center bg-black py-2">
         Built with <a href="https://astro.build" title="Astro" target="_blank" class="text-primary hover:underline">Astro</a> by <a href="https://harigo.me/" target="_blank" title="Harigo" class="text-primary hover:underline">Harigo</a>
     </div>
+
+    <!-- Chat Modal -->
+    <ChatModal />
 
 </Layout>
 
