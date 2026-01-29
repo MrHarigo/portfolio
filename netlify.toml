@@ -6,4 +6,8 @@
   autoLaunch = true
 
 [functions]
-  node_bundler = "esbuild" 
+  node_bundler = "esbuild"
+
+# Enable external node modules for Blobs
+[functions."chat"]
+  external_node_modules = ["@netlify/blobs"] 

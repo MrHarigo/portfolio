@@ -80,6 +80,8 @@ async function getContext() {
     }
   } catch (error) {
     console.log('ℹ️  Netlify Blobs not available, trying environment variable');
+    console.log('   Blobs error details:', error.message);
+    if (error.code) console.log('   Error code:', error.code);
   }
 
   // Fallback to environment variable (local development)
