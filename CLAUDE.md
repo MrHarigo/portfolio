@@ -48,8 +48,8 @@ src/
     └── profile.png
 
 netlify/functions/
-├── ga4-visitors.js             # Serverless function for GA4 analytics
-└── chat.js                     # Serverless function for AI chatbot
+├── ga4-visitors.cjs            # Serverless function for GA4 analytics
+└── chat.cjs                    # Serverless function for AI chatbot
 ```
 
 ### Key Architectural Patterns
@@ -130,7 +130,7 @@ The portfolio includes an AI-powered chatbot that allows recruiters and visitors
 ### Implementation Details
 - **Chat page**: `src/pages/chat.astro` - Full-screen chat interface with vanilla JS
 - **Button**: Located in `src/components/Contact.astro` - Opens chat in new tab
-- **Function**: `netlify/functions/chat.js` - Handles Groq API integration
+- **Function**: `netlify/functions/chat.cjs` - Handles Groq API integration
 - **Styling**: Matches portfolio aesthetic (dark theme, monospace, rose accent)
 
 ### Free Tier Limits
