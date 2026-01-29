@@ -1,5 +1,5 @@
 const Groq = require('groq-sdk');
-const { getStore } = require('@netlify/blobs');
+const { getStore, connectLambda } = require('@netlify/blobs');
 
 // Rate limiting per session (stored in memory)
 // In production, consider using Netlify Blobs or external storage
@@ -30,8 +30,6 @@ async function getContext() {
   try {
     // Try to get from Netlify Blobs first (production)
     console.log('🔍 Attempting to access Netlify Blobs...');
-    console.log('   NETLIFY_BLOBS_CONTEXT:', process.env.NETLIFY_BLOBS_CONTEXT ? 'present' : 'missing');
-    console.log('   Context:', typeof context);
 
     const store = getStore('chatbot');
     console.log('✅ Store instance created');
@@ -111,6 +109,11 @@ async function getContext() {
 
 exports.handler = async (event, context) => {
   try {
+    // Initialize Netlify Blobs context for Lambda compatibility mode
+    if (event.blobs) {
+      connectLambda(event);
+    }
+
     // Only allow POST requests
     if (event.httpMethod !== 'POST') {
       return {
