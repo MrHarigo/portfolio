@@ -34,11 +34,15 @@ The chatbot uses Groq's free API to provide an interactive experience where visi
 #### Local Development
 
 1. Open your `.env` file in the project root
-2. Find the line that says `GROQ_API_KEY='your_groq_api_key_here'`
-3. Replace `your_groq_api_key_here` with your actual API key:
+2. Add your Groq API key:
    ```bash
    GROQ_API_KEY='gsk_YOUR_ACTUAL_API_KEY_HERE'
    ```
+3. **IMPORTANT:** Add your chatbot context from `.env.chatbot-context`:
+   - Copy the entire `CHATBOT_CONTEXT='...'` section from `.env.chatbot-context`
+   - Paste it into your `.env` file
+   - The context includes your CV details, salary expectations, and recruiter FAQ
+   - **Keep this private!** Never commit `.env` to your repository
 4. Save the file
 
 #### Netlify Deployment
@@ -46,13 +50,21 @@ The chatbot uses Groq's free API to provide an interactive experience where visi
 1. Go to your Netlify dashboard
 2. Select your portfolio site
 3. Go to **Site settings** → **Environment variables**
-4. Click **Add a variable**
-5. Add:
+4. Add both required variables:
+
+   **Variable 1: Groq API Key**
    - **Key**: `GROQ_API_KEY`
-   - **Value**: Your Groq API key
+   - **Value**: Your Groq API key (e.g., `gsk_...`)
    - **Scopes**: Check all (Production, Deploy previews, Branch deploys)
-6. Click **Save**
-7. Trigger a new deploy for changes to take effect
+
+   **Variable 2: Chatbot Context** (IMPORTANT!)
+   - **Key**: `CHATBOT_CONTEXT`
+   - **Value**: Copy the entire context from `.env.chatbot-context` file (the full multi-line text inside the single quotes)
+   - **Scopes**: Check all (Production, Deploy previews, Branch deploys)
+   - This contains your CV details, salary expectations, and recruiter FAQ
+
+5. Click **Save** after adding both
+6. Trigger a new deploy for changes to take effect
 
 ## Testing Locally
 
@@ -115,11 +127,13 @@ The chat interface is in `src/pages/chat.astro`. All styling uses Tailwind class
 
 ## Security Notes
 
-- ✅ API key is stored in environment variables (never committed to git)
-- ✅ Rate limiting prevents abuse
-- ✅ Input validation (max 500 characters)
-- ✅ Session-based tracking prevents spam
-- ✅ XSS protection via HTML escaping
+- ✅ **API key stored in environment variables** (never committed to git)
+- ✅ **Chatbot context in environment variables** (keeps salary expectations and personal preferences private)
+- ✅ **Rate limiting prevents abuse** (20 messages per session)
+- ✅ **Input validation** (max 500 characters per message)
+- ✅ **Session-based tracking** prevents spam
+- ✅ **XSS protection** via HTML escaping
+- ⚠️ **Never commit `.env` or `.env.chatbot-context`** - these contain sensitive information
 
 ## Cost Estimation
 
