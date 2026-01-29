@@ -8,7 +8,7 @@
         "build": "node scripts/fetch-cv.js && astro build",
         "preview": "astro preview",
         "astro": "astro",
-        "upload-context": "netlify blobs:set chatbot context \"$(cat .env.chatbot-context | grep CHATBOT_CONTEXT | cut -d\"'\" -f2)\""
+        "upload-context": "node scripts/extract-context.js > /tmp/chatbot-context.txt && netlify blobs:set chatbot context --input /tmp/chatbot-context.txt"
     },
     "dependencies": {
         "@astrojs/netlify": "^6.3.3",
