@@ -8,7 +8,10 @@ const MAX_MESSAGES_PER_SESSION = 20;
 const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 hour
 
 // Cache for context to avoid repeated Blob reads
+// Cache expires after 5 minutes to allow updates without full redeployment
 let cachedContext = null;
+let cacheTimestamp = 0;
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 /**
  * Get chatbot context from Netlify Blobs or environment variable
@@ -20,8 +23,10 @@ let cachedContext = null;
  * Netlify's 5000 character limit for environment variables
  */
 async function getContext() {
-  // Return cached context if available
-  if (cachedContext) {
+  // Check if cache is still valid
+  const now = Date.now();
+  if (cachedContext && (now - cacheTimestamp < CACHE_TTL)) {
+    console.log('✅ Using cached context');
     return cachedContext;
   }
 
@@ -31,8 +36,9 @@ async function getContext() {
     const context = await store.get('context', { type: 'text' });
 
     if (context) {
-      console.log('✅ Loaded context from Netlify Blobs');
+      console.log(`✅ Loaded context from Netlify Blobs (${context.length} characters)`);
       cachedContext = context;
+      cacheTimestamp = Date.now();
       return context;
     }
   } catch (error) {
@@ -43,6 +49,7 @@ async function getContext() {
   if (process.env.CHATBOT_CONTEXT) {
     console.log('✅ Loaded context from environment variable');
     cachedContext = process.env.CHATBOT_CONTEXT;
+    cacheTimestamp = Date.now();
     return cachedContext;
   }
 
