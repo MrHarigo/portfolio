@@ -50,13 +50,14 @@ async function fetchCV() {
     console.log(`   Size: ${(buffer.byteLength / 1024).toFixed(2)} KB`);
     console.log(`   Location: public/cv.pdf`);
 
-    // Generate metadata from file stats
-    await generateMetadata();
+    // Get last-modified header from HTTP response
+    const lastModifiedHeader = response.headers.get('last-modified');
 
-    // Get last-modified header if available
-    const lastModified = response.headers.get('last-modified');
-    if (lastModified) {
-      console.log(`   Last modified: ${new Date(lastModified).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`);
+    // Generate metadata using HTTP Last-Modified header if available
+    await generateMetadata(lastModifiedHeader);
+
+    if (lastModifiedHeader) {
+      console.log(`   Last modified: ${new Date(lastModifiedHeader).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`);
     }
   } catch (error) {
     console.error('❌ Failed to fetch CV:', error.message);
@@ -65,11 +66,20 @@ async function fetchCV() {
   }
 }
 
-async function generateMetadata() {
+async function generateMetadata(lastModifiedHeader = null) {
   try {
-    // Read file stats
+    // Read file stats for size
     const stats = await stat(OUTPUT_PATH);
-    const lastModified = new Date(stats.mtime);
+
+    // Use HTTP Last-Modified header if available, otherwise fall back to file mtime
+    let lastModified;
+    if (lastModifiedHeader) {
+      lastModified = new Date(lastModifiedHeader);
+      console.log('ℹ️  Using Last-Modified from HTTP header');
+    } else {
+      lastModified = new Date(stats.mtime);
+      console.log('⚠️  Using file mtime (HTTP Last-Modified header not available)');
+    }
 
     // Generate metadata
     const metadata = {

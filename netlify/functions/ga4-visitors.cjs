@@ -5,15 +5,17 @@ let cachedData = null;
 let cacheTime = null;
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
-// Hardcoded GA4 property ID
+// Hardcoded GA4 property ID (measurement ID: G-WX0M47C15W)
 const PORTFOLIO_ID = 489929948;
 
 // Map project IDs to their hostnames
+// NOTE: Only projects that send data to the portfolio's GA4 property will show visitor counts
+// Projects using different GA4 properties won't appear in the results
 const PROJECT_HOSTNAMES = {
   'portfolio': 'harigo.me',
   'daily-habits': 'daily.harigo.me',
   'poker-planner': 'planner.harigo.me',
-  'poker-share': 'share.harigo.me',
+  'poker-share': 'share.harigo.me', // Currently uses different GA4 property (G-PPNQGY9HY5)
 };
 
 exports.handler = async (event, context) => {

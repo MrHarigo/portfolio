@@ -71,6 +71,8 @@ The main page (`src/pages/index.astro`) uses a CSS-only tab system:
 - **Caching**: 1-hour cache to reduce API calls
 - **Project Mapping**: Maps project IDs to hostnames (harigo.me, daily.harigo.me, planner.harigo.me)
 - **Environment**: Uses `GA4_CREDENTIALS` from `.env` (stringified service account JSON)
+- **GA4 Property**: Queries property ID `489929948` (measurement ID: `G-WX0M47C15W`)
+- **Important**: Projects must send analytics data to the same GA4 property to display visitor counts. Projects using different GA4 properties (e.g., Poker Share uses `G-PPNQGY9HY5`) won't show visitor counts unless they also send data to the portfolio's GA4 property
 
 ### Styling Architecture
 
