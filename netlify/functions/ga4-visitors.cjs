@@ -13,6 +13,7 @@ const PROJECT_HOSTNAMES = {
   'portfolio': 'harigo.me',
   'daily-habits': 'daily.harigo.me',
   'poker-planner': 'planner.harigo.me',
+  'poker-share': 'share.harigo.me',
 };
 
 exports.handler = async (event, context) => {
