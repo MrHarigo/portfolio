@@ -69,8 +69,10 @@ The main page (`src/pages/index.astro`) uses a CSS-only tab system:
 #### Analytics Integration
 - **Netlify Function** (`netlify/functions/ga4-visitors.js`): Fetches visitor counts from Google Analytics 4
 - **Caching**: 1-hour cache to reduce API calls
-- **Project Mapping**: Maps project IDs to hostnames (harigo.me, daily.harigo.me, planner.harigo.me)
+- **Project Mapping**: Maps project IDs to hostnames (harigo.me, daily.harigo.me, planner.harigo.me, share.harigo.me)
 - **Environment**: Uses `GA4_CREDENTIALS` from `.env` (stringified service account JSON)
+- **GA4 Property**: All projects use property ID `489929948` (measurement ID: `G-WX0M47C15W`)
+- **Visitor Counts**: Each project shows separate visitor counts based on hostname dimension
 
 ### Styling Architecture
 

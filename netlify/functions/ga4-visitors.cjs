@@ -5,7 +5,7 @@ let cachedData = null;
 let cacheTime = null;
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
-// Hardcoded GA4 property ID
+// Hardcoded GA4 property ID (measurement ID: G-WX0M47C15W)
 const PORTFOLIO_ID = 489929948;
 
 // Map project IDs to their hostnames
