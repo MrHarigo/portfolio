@@ -9,13 +9,11 @@ const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 const PORTFOLIO_ID = 489929948;
 
 // Map project IDs to their hostnames
-// NOTE: Only projects that send data to the portfolio's GA4 property will show visitor counts
-// Projects using different GA4 properties won't appear in the results
 const PROJECT_HOSTNAMES = {
   'portfolio': 'harigo.me',
   'daily-habits': 'daily.harigo.me',
   'poker-planner': 'planner.harigo.me',
-  'poker-share': 'share.harigo.me', // Currently uses different GA4 property (G-PPNQGY9HY5)
+  'poker-share': 'share.harigo.me',
 };
 
 exports.handler = async (event, context) => {
