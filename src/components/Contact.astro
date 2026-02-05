@@ -102,6 +102,7 @@ const { displayDate: cvLastUpdated, fileName: cvFileName } = cvMetadata.default;
 
     <script>
         document.getElementById('open-chat-button')?.addEventListener('click', () => {
+            window.location.hash = 'chat';
             window.dispatchEvent(new CustomEvent('open-chat-modal'));
         });
     </script>

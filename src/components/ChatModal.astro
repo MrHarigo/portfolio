@@ -254,6 +254,10 @@
         if (chatModal) {
             chatModal.classList.add('hidden');
             chatModal.classList.remove('flex');
+            // Remove hash from URL
+            if (window.location.hash === '#chat') {
+                history.pushState('', document.title, window.location.pathname + window.location.search);
+            }
         }
     }
 
@@ -276,6 +280,11 @@
 
     // Listen for open chat modal event
     window.addEventListener('open-chat-modal', openChatModal);
+
+    // Auto-open modal if URL has #chat hash
+    if (window.location.hash === '#chat') {
+        openChatModal();
+    }
 
     // Handle form submission
     chatForm?.addEventListener('submit', async (e) => {
