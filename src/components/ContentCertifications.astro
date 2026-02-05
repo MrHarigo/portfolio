@@ -62,13 +62,13 @@ const certifications: Certification[] = [{
                     )}
 
                     <!-- Content -->
-                    <div class="flex-grow">
+                    <div class="flex-grow min-w-0">
 
-                        <h3 class="text-lg font-semibold text-white mb-1">
+                        <h3 class="text-lg font-semibold text-white mb-1 break-words">
                             {cert.name}
                         </h3>
 
-                        <p class="text-gray-400 text-sm mb-2">
+                        <p class="text-gray-400 text-sm mb-2 break-words">
                             {cert.issuer}
                         </p>
 
@@ -78,7 +78,7 @@ const certifications: Certification[] = [{
                         </p>
 
                         {cert.credentialId && (
-                            <p class="text-gray-600 text-xs mb-3">
+                            <p class="text-gray-600 text-xs mb-3 break-all">
                                 Credential ID: {cert.credentialId}
                             </p>
                         )}
