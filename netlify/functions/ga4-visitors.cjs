@@ -14,6 +14,7 @@ const PROJECT_HOSTNAMES = {
   'daily-habits': 'daily.harigo.me',
   'poker-planner': 'planner.harigo.me',
   'poker-share': 'share.harigo.me',
+  'milestone-countdown': 'countdown.harigo.me',
 };
 
 exports.handler = async (event, context) => {
