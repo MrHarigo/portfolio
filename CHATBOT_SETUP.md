@@ -9,7 +9,7 @@ The chatbot uses Groq's free API to provide an interactive experience where visi
 ## Features
 
 - ✅ **Free**: Uses Groq's free tier (1,000 requests/day)
-- ✅ **Fast**: Powered by Llama 3.1 70B on Groq's LPU hardware
+- ✅ **Fast**: Powered by Qwen 3.6 27B on Groq's LPU hardware
 - ✅ **Secure**: Rate-limited to prevent abuse (20 messages per session)
 - ✅ **Context-aware**: Pre-loaded with your portfolio information
 - ✅ **Persistent**: Chat history saved in browser localStorage
@@ -115,7 +115,7 @@ Only use this if you've significantly shortened your context:
 ### Free Tier (Groq)
 - **Requests**: 1,000 per day
 - **Tokens**: 6,000 per minute
-- **Models**: Full access to Llama 3.1, Mixtral, and more
+- **Models**: Full access to Qwen 3.6/3.8 and GPT-OSS 20B/120B
 
 ### Rate Limiting (Per Session)
 - **Messages**: 20 per session

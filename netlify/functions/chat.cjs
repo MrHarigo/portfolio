@@ -218,9 +218,14 @@ exports.handler = async (event, context) => {
           content: message
         }
       ],
-      model: 'llama-3.3-70b-versatile',
+      // Qwen 3.6 27B is a hybrid reasoning model. 'none' + 'hidden' keep it in
+      // non-thinking mode, so reasoning tokens never eat into the completion budget
+      // (which would leave message.content empty and trigger the error path below).
+      model: 'qwen/qwen3.6-27b',
+      reasoning_effort: 'none',
+      reasoning_format: 'hidden',
       temperature: 0.7,
-      max_tokens: 500,
+      max_completion_tokens: 500,
       top_p: 1,
       stream: false
     });

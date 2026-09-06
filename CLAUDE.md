@@ -124,7 +124,7 @@ The portfolio includes an AI-powered chatbot that allows recruiters and visitors
 
 ### How It Works
 - **Full-page interface**: Accessible at `/chat/` in a new tab
-- **AI Provider**: Uses Groq API with Llama 3.1 70B model (free tier)
+- **AI Provider**: Uses Groq API with Qwen 3.6 27B model (free tier, reasoning disabled)
 - **Context-aware**: Pre-loaded with portfolio information (projects, skills, certifications)
 - **Rate limiting**: 20 messages per session to prevent abuse
 - **Session persistence**: Chat history stored in localStorage
@@ -137,6 +137,8 @@ The portfolio includes an AI-powered chatbot that allows recruiters and visitors
 
 ### Free Tier Limits
 - **Groq API**: 1,000 requests per day (free)
+- **Token throughput**: 8,000 tokens/minute site-wide — the system context is sent on
+  every message, so sustained concurrent use can hit a 429 from Groq
 - **Per session**: 20 messages maximum
 - **Session timeout**: 1 hour
 
